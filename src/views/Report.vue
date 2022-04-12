@@ -1,9 +1,9 @@
 <template>
 	<div class="report d-flex flex-column">
 		<!-- select outlet -->
-		<div class="col d-flex justify-content-between bg-white p-3 m-2">
+		<div class="col d-flex justify-content-between bg-white p-2 m-1 m-md-3">
 			<select
-				class="col-3 p-2"
+				class="col-5 p-2"
 				name="outlets"
 				v-model.number="selectedOutlet"
 				@change="changeOutlet"
@@ -17,26 +17,23 @@
 				</option>
 			</select>
 
-			<button
-				class="btn btn-outline-primary"
-				@click="reportOnLastSession"
-			>
-				Обновить
+			<button class="btn btn-outline-dark" @click="reportOnLastSession">
+				<i class="bi bi-arrow-repeat"></i>
 			</button>
 		</div>
 		<!-- /select outlet -->
 
 		<!-- report on last session -->
-		<div class="col d-flex flex-wrap bg-white p-3 m-2">
-			<h6 class="col-12 text-center">Метрики по последней сессии</h6>
+		<div class="col d-flex flex-wrap bg-white p-2 m-1 m-md-3">
+			<h6 class="col-12 text-center">Метрики по последней смене</h6>
 
 			<div class="col d-flex flex-column">
 				<span>
-					ID сотрудника:
+					<i class="bi bi-person-fill"></i> ID сотрудника:
 					<b>{{ lastSession.employee_id }}</b>
 				</span>
 				<span>
-					Статус:
+					<i class="bi bi-bar-chart-line"></i> Статус смены:
 					<b>
 						{{
 							lastSession.date_close === "-"
@@ -49,21 +46,23 @@
 				<hr />
 
 				<span>
-					Время открытия:
+					<i class="bi bi-door-open"></i> Открыта:
 					{{ lastSession.date_open }}
 				</span>
 				<span>
-					Время закрытия:
+					<i class="bi bi-door-closed"></i> Закрыта:
 					{{ lastSession.date_close }}
 				</span>
 
 				<hr />
 
 				<span>
+					<i class="bi bi-cash-coin"></i>
 					Наличные на момент открытия кассы:
 					{{ lastSession.cash_open }}
 				</span>
 				<span>
+					<i class="bi bi-cash-coin"></i>
 					Наличные на момент закрытия кассы:
 					{{ lastSession.cash_close }}
 				</span>
@@ -71,13 +70,13 @@
 				<hr />
 
 				<span>
-					Кол-во чеков:
+					<i class="bi bi-cart-check"></i> Кол-во чеков:
 					<b>
 						{{ lastSession.number_of_receipts }}
 					</b>
 				</span>
 				<span>
-					Выручка:
+					<i class="bi bi-piggy-bank"></i> Выручка:
 					<b>
 						{{
 							(
