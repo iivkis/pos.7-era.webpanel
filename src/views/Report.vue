@@ -39,7 +39,9 @@
 					Статус:
 					<b>
 						{{
-							lastSession.date_close === 0 ? "открыта" : "закрыта"
+							lastSession.date_close === "-"
+								? "открыта"
+								: "закрыта"
 						}}
 					</b>
 				</span>
@@ -137,8 +139,12 @@
 				this.lastSession = val;
 
 				//transform open date
-				date = new Date(this.lastSession.date_open);
-				this.lastSession.date_open = `${date.toDateString()} ${date.getHours()}:${date.getMinutes()}`;
+				if (this.lastSession.date_open === 0)
+					this.lastSession.date_open = "-";
+				else {
+					date = new Date(this.lastSession.date_open);
+					this.lastSession.date_open = `${date.toDateString()} ${date.getHours()}:${date.getMinutes()}`;
+				}
 
 				//transform close date
 				if (this.lastSession.date_close === 0)
@@ -178,7 +184,10 @@
 					},
 				}).then((res) => {
 					this.$data.lastSession = res.data.data;
-					if (this.$data.lastSession.date_close === 0) {
+					if (
+						this.$data.lastSession.date_close === 0 &&
+						this.$data.lastSession.date_open != 0
+					) {
 						this.calculateReceiptsByLastSession();
 						this.calculateProfitByLastSession();
 					}
