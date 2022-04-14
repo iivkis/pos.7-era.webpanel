@@ -1,7 +1,17 @@
 <template>
-	<div class="report d-flex flex-column">
+	<div class="report d-flex flex-wrap flex-row justify-content-center">
 		<!-- select outlet -->
-		<div class="col d-flex justify-content-between bg-white p-2 m-1 m-md-3">
+		<div
+			class="
+				col col-9
+				d-flex
+				justify-content-between
+				bg-white
+				p-2
+				m-1 m-md-3
+				shadow-sm
+			"
+		>
 			<select
 				class="col-5 p-2"
 				name="outlets"
@@ -9,7 +19,7 @@
 				@change="changeOutlet"
 			>
 				<option
-					v-for="(outlet, index) in outlets"
+					v-for="(outlet, index) in $store.state.outlets"
 					:key="index"
 					:value="outlet.id"
 				>
@@ -24,84 +34,23 @@
 		<!-- /select outlet -->
 
 		<!-- report on last session -->
-		<div class="col d-flex flex-wrap bg-white p-2 m-1 m-md-3">
-			<h6 class="col-12 text-center">Метрики по последней смене</h6>
-
-			<div class="col d-flex flex-column">
-				<span>
-					<i class="bi bi-person-fill"></i> ID сотрудника:
-					<b>{{ lastSession.employee_id }}</b>
-				</span>
-				<span>
-					<i class="bi bi-bar-chart-line"></i> Статус смены:
-					<b>
-						{{
-							lastSession.date_close === "-"
-								? "открыта"
-								: "закрыта"
-						}}
-					</b>
-				</span>
-
-				<hr />
-
-				<span>
-					<i class="bi bi-door-open"></i> Открыта:
-					{{ lastSession.date_open }}
-				</span>
-				<span>
-					<i class="bi bi-door-closed"></i> Закрыта:
-					{{ lastSession.date_close }}
-				</span>
-
-				<hr />
-
-				<span>
-					<i class="bi bi-cash-coin"></i>
-					Наличные на момент открытия кассы:
-					{{ lastSession.cash_open }}
-				</span>
-				<span>
-					<i class="bi bi-cash-coin"></i>
-					Наличные на момент закрытия кассы:
-					{{ lastSession.cash_close }}
-				</span>
-
-				<hr />
-
-				<span>
-					<i class="bi bi-cart-check"></i> Кол-во чеков:
-					<b>
-						{{ lastSession.number_of_receipts }}
-					</b>
-				</span>
-				<span>
-					<i class="bi bi-piggy-bank"></i> Выручка:
-					<b>
-						{{
-							(
-								lastSession.cash_earned +
-								lastSession.bank_earned
-							).toFixed(2)
-						}}
-						₽
-					</b>
-				</span>
-			</div>
-		</div>
+		<report-last-session :lastSession="lastSession" />
 		<!-- report on last session -->
 	</div>
 </template>
 
 <script>
-	import http from "@/openapi";
+	import http from "@/http";
+
+	import ReportLastSession from "@/components/ReportLastSession.vue";
 
 	export default {
 		name: "ReportView",
+		components: {
+			ReportLastSession,
+		},
 		data: () => {
 			return {
-				reloadKey: false,
-
 				selectedOutlet: 0,
 
 				outlets: [
@@ -224,4 +173,8 @@
 </script>
 
 <style>
+	b {
+		color: #aeea00;
+		font-size: 1.05em;
+	}
 </style>
