@@ -1,9 +1,9 @@
 <template>
-	<div class="report d-flex flex-wrap flex-row justify-content-center">
+	<div class="report d-flex flex-wrap justify-content-center">
 		<!-- select outlet -->
 		<div
 			class="
-				col col-9
+				col-12 col-md-9
 				d-flex
 				justify-content-between
 				bg-white

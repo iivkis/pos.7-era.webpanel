@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="
-			col col-md-9
+			col-12 col-md-9
 			d-flex
 			flex-wrap
 			bg-white
