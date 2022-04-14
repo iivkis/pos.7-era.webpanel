@@ -45,12 +45,12 @@
 
 			<span>
 				<i class="bi bi-cash-coin"></i>
-				Наличные на момент открытия кассы:
+				Нал. на момент открытия:
 				<b>{{ lastSession.cash_open }}</b>
 			</span>
 			<span>
 				<i class="bi bi-cash-coin"></i>
-				Наличные на момент закрытия кассы:
+				Нал. на момент закрытия:
 				<b>{{ lastSession.cash_close }}</b>
 			</span>
 
