@@ -36,6 +36,10 @@
 		<!-- report on last session -->
 		<report-last-session :lastSession="lastSession" />
 		<!-- report on last session -->
+
+		<!-- report on days -->
+		<report-on-days :selectedOutlet="selectedOutlet" />
+		<!-- /report on days -->
 	</div>
 </template>
 
@@ -43,11 +47,13 @@
 	import http from "@/http";
 
 	import ReportLastSession from "@/components/ReportLastSession.vue";
+	import ReportOnDays from "@/components/ReportOnDays.vue";
 
 	export default {
 		name: "ReportView",
 		components: {
 			ReportLastSession,
+			ReportOnDays,
 		},
 		data: () => {
 			return {
@@ -174,7 +180,7 @@
 
 <style>
 	b {
-		color: #aeea00;
+		color: var(--color-lime);
 		font-size: 1.05em;
 	}
 </style>

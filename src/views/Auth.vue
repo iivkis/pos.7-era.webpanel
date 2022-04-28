@@ -139,6 +139,10 @@
 				}
 
 				await this.loadOutlets();
+
+				// localStorage.setItem("org", this.$store.state.orgJWT);
+				// localStorage.setItem("empl", this.$store.state.emplJWT);
+
 				this.$router.push({ name: "report" });
 			},
 		},
