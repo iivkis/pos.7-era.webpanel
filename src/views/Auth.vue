@@ -7,34 +7,35 @@
 			<!-- email -->
 			<div class="row mt-3">
 				<input
-					name="email"
+					autocomplete="on"
 					type="text"
 					class="form-control"
 					placeholder="Е-мейл"
-					v-model="email"
+					v-model.trim="email"
 				/>
 			</div>
 
 			<!-- password -->
 			<div class="row mt-3">
 				<input
-					name="org_password"
+					autocomplete="on"
 					type="password"
 					class="form-control"
 					placeholder="Пароль организации"
-					v-model="password"
+					v-model.trim="password"
 				/>
 			</div>
 
 			<!-- pin -->
 			<div class="row mt-3">
 				<input
-					autocomplete="false"
-					name="owner_pin"
-					type="password"
+					autocomplete="on"
 					class="form-control"
 					placeholder="PIN владельца"
-					v-model="pin"
+					v-model.trim="securepin"
+					@keyup="enterPIN"
+					@keyup.delete="delPIN"
+					maxlength="6"
 				/>
 			</div>
 
@@ -60,6 +61,7 @@
 				email: "",
 				password: "",
 				pin: "",
+				securepin: "",
 
 				logo: logo,
 			};
@@ -144,6 +146,18 @@
 				// localStorage.setItem("empl", this.$store.state.emplJWT);
 
 				this.$router.push({ name: "report" });
+			},
+
+			enterPIN(e) {
+				if (this.$data.pin.length < 6) {
+					this.$data.pin += e.target.value.slice(-1);
+					this.$data.securepin = "*".repeat(this.$data.pin.length);
+				}
+			},
+
+			delPIN() {
+				this.$data.pin = "";
+				this.$data.securepin = "";
 			},
 		},
 	};
