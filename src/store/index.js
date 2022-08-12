@@ -21,6 +21,7 @@ export default createStore({
 
     setEmplJWT(state, jwt) {
       state.emplJWT = jwt
+      console.log(jwt)
     },
 
     setAffiliate(state, bool) {
