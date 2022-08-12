@@ -5,7 +5,7 @@ import Authorization from '../view/Authorization.vue';
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/auth",
-        name: "Home",
+        name: "Authorization",
         component: Authorization,
     },
 ];
