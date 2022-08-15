@@ -12,6 +12,7 @@ import { GetEmployees } from "../service/api/employees";
 import { Errors } from "../service/api/errors";
 
 const store = useStore(key);
+const router = useRouter();
 
 var login = ref("");
 var password = ref("");
@@ -50,6 +51,10 @@ async function authorization() {
 	}
 
 	console.info("success login");
+
+	router.push({
+		name:"Outlets"
+	})
 }
 </script>
 
@@ -140,6 +145,7 @@ async function authorization() {
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ServerError } from "../service/api/api.types";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
 	name: "Authorization",
