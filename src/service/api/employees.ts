@@ -1,4 +1,3 @@
-import { store } from "../../store";
 import { Do, OrganizationHeaders, Request } from ".";
 
 interface GetEmployees {

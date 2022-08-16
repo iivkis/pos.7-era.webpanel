@@ -1,20 +1,34 @@
+<script setup lang="ts">
+import { onMounted, ref, Ref } from "vue";
+import { GetOutlets, GetOutletsResponse } from "../service/api/outlets";
+
+var myOutlets = ref([]) as Ref<GetOutletsResponse[]>;
+
+onMounted(async () => {
+    myOutlets.value = await GetOutlets();
+});
+</script>
+
 <template>
     <div class="container">
         <Header title="Выберите точку продаж"></Header>
-
         <ul class="organizations">
+            <!-- organization outlets -->
             <li class="organizations-item">
                 <h2 class="organizations-item__name">Моя организация</h2>
                 <ul class="outlets">
-                    <li class="outlets-item">
-                        <h3 class="outlets-item__name">Главная точка продаж</h3>
-                    </li>
-                    <li class="outlets-item">
-                        <h3 class="outlets-item__name">Старый базар</h3>
+                    <li
+                        class="outlets-item"
+                        v-for="(outlet, index) in myOutlets"
+                        :key="index"
+                    >
+                        <h3 class="outlets-item__name">{{ outlet.name }}</h3>
                     </li>
                 </ul>
             </li>
+            <!-- /organization outlets -->
 
+            <!-- affiliate -->
             <li class="organizations-item">
                 <h2 class="organizations-item__name">ИП "Белые ночи"</h2>
                 <ul class="outlets">
@@ -23,6 +37,7 @@
                     </li>
                 </ul>
             </li>
+            <!-- /affiliate -->
         </ul>
     </div>
 </template>
@@ -60,7 +75,7 @@
 
 .outlets {
     @apply flex flex-col;
-    @apply ml-7 lg:ml-10 mt-1.5 pr-4;
+    @apply ml-8 mt-1.5 pr-4;
 }
 
 .outlets-item {
@@ -87,6 +102,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Header from "../components/Header.vue";
+import { ServerError } from "../service/api/api.types";
 
 export default defineComponent({
     name: "Outlets",
