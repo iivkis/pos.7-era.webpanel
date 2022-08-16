@@ -12,11 +12,12 @@ body {
 
 .container {
     @apply mx-auto;
+    @apply lg:w-1/3;
 }
 
 .btn {
     @apply transition-all;
-    @apply px-6 py-3 rounded-sm;
+    @apply px-6 py-3 rounded-md;
     @apply text-white tracking-wide;
 }
 

@@ -1,8 +1,6 @@
 <template>
     <div class="container">
-        <header class="header">
-            <h1 class="header__title">Выберите точку продаж</h1>
-        </header>
+        <Header title="Выберите точку продаж"></Header>
 
         <ul class="organizations">
             <li class="organizations-item">
@@ -10,11 +8,9 @@
                 <ul class="outlets">
                     <li class="outlets-item">
                         <h3 class="outlets-item__name">Главная точка продаж</h3>
-                        <span class="outlets-item__id">#892</span>
                     </li>
                     <li class="outlets-item">
                         <h3 class="outlets-item__name">Старый базар</h3>
-                        <span class="outlets-item__id">#892</span>
                     </li>
                 </ul>
             </li>
@@ -24,7 +20,6 @@
                 <ul class="outlets">
                     <li class="outlets-item">
                         <h3 class="outlets-item__name">Главная точка продаж</h3>
-                        <span class="outlets-item__id">#892</span>
                     </li>
                 </ul>
             </li>
@@ -33,16 +28,6 @@
 </template>
 
 <style scoped lang="postcss">
-.header {
-    @apply w-full text-center;
-    @apply bg-white px-2 py-3.5;
-    @apply rounded-b-lg shadow-md;
-}
-
-.header__title {
-    @apply text-lg text-slate-800;
-}
-
 .organizations {
     @apply bg-white rounded-lg shadow-md;
     @apply mt-3;
@@ -75,23 +60,36 @@
 
 .outlets {
     @apply flex flex-col;
-    @apply ml-7 mt-1.5 pr-4;
+    @apply ml-7 lg:ml-10 mt-1.5 pr-4;
 }
 
 .outlets-item {
     @apply flex justify-between;
-    @apply py-0.5;
+    @apply relative py-1;
+}
+
+.outlets-item::before {
+    content: "";
+
+    @apply block absolute rounded-full;
+    @apply p-0.5 border-2 border-lime-400;
+
+    top: 11px;
+    left: -15px;
 }
 
 .outlets-item__name {
+    @apply cursor-pointer;
     @apply hover:underline;
 }
 </style>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Header from "../components/Header.vue";
 
 export default defineComponent({
     name: "Outlets",
+    components: { Header },
 });
 </script>
