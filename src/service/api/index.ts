@@ -32,4 +32,10 @@ const OrganizationHeaders = (): AxiosRequestHeaders => {
     };
 };
 
-export { Request, Do, OrganizationHeaders };
+const EmployeeHeaders = (): AxiosRequestHeaders => {
+    return {
+        Authorization: store.state.EmployeeAPIKey,
+    };
+};
+
+export { Request, Do, OrganizationHeaders, EmployeeHeaders };

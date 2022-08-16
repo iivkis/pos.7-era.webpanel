@@ -2,10 +2,17 @@
 import { onMounted, ref, Ref } from "vue";
 import { GetOutlets, GetOutletsResponse } from "../service/api/outlets";
 
+import {
+    GetActivatedInvites,
+    GetActivatedInvitesResponse,
+} from "../service/api/invites";
+
 var myOutlets = ref([]) as Ref<GetOutletsResponse[]>;
+var affiliates = ref([]) as Ref<GetActivatedInvitesResponse[]>;
 
 onMounted(async () => {
     myOutlets.value = await GetOutlets();
+    affiliates.value = await GetActivatedInvites();
 });
 </script>
 
@@ -29,11 +36,22 @@ onMounted(async () => {
             <!-- /organization outlets -->
 
             <!-- affiliate -->
-            <li class="organizations-item">
-                <h2 class="organizations-item__name">ИП "Белые ночи"</h2>
+            <li
+                class="organizations-item"
+                v-for="(affiliate, index) in affiliates"
+                :key="index"
+            >
+                <h2 class="organizations-item__name">
+                    {{ affiliate.affiliate_org.name }}
+                </h2>
                 <ul class="outlets">
-                    <li class="outlets-item">
-                        <h3 class="outlets-item__name">Главная точка продаж</h3>
+                    <li
+                        class="outlets-item"
+                        v-for="(outlet, index) in affiliate.affiliate_org
+                            .outlets"
+                        :key="index"
+                    >
+                        <h3 class="outlets-item__name">{{ outlet.name }}</h3>
                     </li>
                 </ul>
             </li>
