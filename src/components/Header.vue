@@ -7,8 +7,9 @@
 <style scoped lang="postcss">
 .header {
     @apply w-full text-center;
-    @apply bg-white px-2 py-3.5;
+    @apply bg-white px-2 py-3;
     @apply rounded-b-lg shadow-md;
+    @apply border-b-2 border-lime-400;
 }
 
 .header__title {

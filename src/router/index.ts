@@ -1,21 +1,30 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import Authorization from "../view/Authorization.vue";
-import Outlets from "../view/Outlets.vue";
+import AuthorizationIndex from "../view/Authorization/index.vue";
+import MetricsIndex from "../view/Metrics/index.vue";
+import MetricsOutletID from "../view/Metrics/index_outletID.vue";
+
 import { UseEmployeeAuth } from "./middleware";
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/auth",
         name: "Authorization",
-        component: Authorization,
+        component: AuthorizationIndex,
     },
 
     {
-        path: "/outlets",
-        name: "Outlets",
-        component: Outlets,
+        path: "/metrics",
+        name: "Metrics",
+        component: MetricsIndex,
         beforeEnter: UseEmployeeAuth,
+    },
+
+    {
+        path: "/metrics/:outletID",
+        name: "Metrics_OutletID",
+        component: MetricsOutletID,
+        // beforeEnter: UseEmployeeAuth,
     },
 ];
 

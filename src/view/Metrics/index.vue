@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
-import { GetOutlets, GetOutletsResponse } from "../service/api/outlets";
+import { GetOutlets, GetOutletsResponse } from "../../service/api/outlets";
 
 import {
     GetActivatedInvites,
     GetActivatedInvitesResponse,
-} from "../service/api/invites";
+} from "../../service/api/invites";
+
+const router = useRouter()
 
 var myOutlets = ref([]) as Ref<GetOutletsResponse[]>;
 var affiliates = ref([]) as Ref<GetActivatedInvitesResponse[]>;
@@ -14,12 +16,21 @@ onMounted(async () => {
     myOutlets.value = await GetOutlets();
     affiliates.value = await GetActivatedInvites();
 });
+
+function redirect(outletID: number) {
+    router.push({
+        name: "Metrics_OutletID",
+        params:{
+            outletID: outletID
+        }
+    })
+}
 </script>
 
 <template>
     <div class="container">
         <Header title="Выберите точку продаж"></Header>
-        <ul class="organizations">
+        <ul class="content organizations">
             <!-- organization outlets -->
             <li class="organizations-item">
                 <h2 class="organizations-item__name">Моя организация</h2>
@@ -29,7 +40,12 @@ onMounted(async () => {
                         v-for="(outlet, index) in myOutlets"
                         :key="index"
                     >
-                        <h3 class="outlets-item__name">{{ outlet.name }}</h3>
+                        <h3
+                            class="outlets-item__name"
+                            @click="redirect(outlet.id)"
+                        >
+                            {{ outlet.name }}
+                        </h3>
                     </li>
                 </ul>
             </li>
@@ -51,7 +67,12 @@ onMounted(async () => {
                             .outlets"
                         :key="index"
                     >
-                        <h3 class="outlets-item__name">{{ outlet.name }}</h3>
+                        <h3
+                            class="outlets-item__name"
+                            @click="redirect(outlet.id)"
+                        >
+                            {{ outlet.name }}
+                        </h3>
                     </li>
                 </ul>
             </li>
@@ -61,18 +82,13 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="postcss">
-.organizations {
-    @apply bg-white rounded-lg shadow-md;
-    @apply mt-3;
-}
-
 .organizations-item {
     @apply flex flex-col;
     @apply relative;
     @apply ml-5 py-3;
 }
 
-.organizations-item:not(:first-child) {
+.organizations-item:not(:first-of-type) {
     @apply border-t;
 }
 
@@ -119,11 +135,11 @@ onMounted(async () => {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Header from "../components/Header.vue";
-import { ServerError } from "../service/api/api.types";
+import Header from "../../components/Header.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-    name: "Outlets",
+    name: "Metrics",
     components: { Header },
 });
 </script>

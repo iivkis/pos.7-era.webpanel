@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useStore } from "vuex";
-import { key, MutationTypes } from "../store/";
+import { key, MutationTypes } from "../../store/";
 
 import {
     SignInOrganization,
     SignInEmployee,
-} from "../service/api/authorization";
+} from "../../service/api/authorization";
 
-import { GetEmployees } from "../service/api/employees";
-import { Errors } from "../service/api/errors";
+import { GetEmployees } from "../../service/api/employees";
+import { Errors } from "../../service/api/errors";
 
 const store = useStore(key);
 const router = useRouter();
@@ -53,7 +53,7 @@ async function authorization() {
     console.info("success login");
 
     router.push({
-        name: "Outlets",
+        name: "Metrics",
     });
 }
 </script>
@@ -61,7 +61,7 @@ async function authorization() {
 <template>
     <div class="container">
         <Header title="Авторизация в POS-системе"></Header>
-        <form class="form">
+        <form class="content form">
             <div class="form-row">
                 <div class="form-row-field">
                     <input
@@ -112,12 +112,6 @@ async function authorization() {
 </template>
 
 <style lang="postcss">
-.form {
-    @apply p-5 mt-3;
-    @apply bg-white flex flex-col;
-    @apply mx-auto rounded-lg shadow-md;
-}
-
 .form-row {
     @apply my-2 flex justify-center;
 }
@@ -134,10 +128,10 @@ async function authorization() {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ServerError } from "../service/api/api.types";
 import { useRouter } from "vue-router";
+import { ServerError } from "../../service/api/api.types";
 
-import Header from "../components/Header.vue";
+import Header from "../../components/Header.vue";
 
 export default defineComponent({
     name: "Authorization",
