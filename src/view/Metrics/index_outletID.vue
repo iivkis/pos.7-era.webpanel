@@ -31,11 +31,11 @@ var lastSessionInfo = ref([
     [
         {
             key: "Открыта",
-            value: "10:15 - 01.07.2022",
+            value: "10:15 - 10.07.2022",
         },
         {
             key: "Закрыта",
-            value: "20:19 - 01.07.2022",
+            value: "20:19 - 10.07.2022",
         },
     ],
     [
@@ -67,33 +67,26 @@ var lastSessionInfo = ref([
 
         <div class="content">
             <div class="content-header">
-                <h3 class="content-header__title">Описание</h3>
+                <h3 class="content-header__title">Cмены</h3>
             </div>
 
-            <ul
-                class="content-info"
-                v-for="(descGroup, index) in description"
-                :key="index"
-            >
-                <li
-                    class="content-info-item"
-                    v-for="(desc, index) in descGroup"
-                    :key="index"
-                >
-                    <span class="content-info-item__key">
-                        {{ desc.key }}:
-                    </span>
-                    <span class="content-info-item__value">
-                        {{ desc.value }}
-                    </span>
-                </li>
-            </ul>
-        </div>
+            <input
+                type="date"
+                class="text-center border bg-slate-100 rounded-md p-1 my-1"
+                title="от даты открытия смены"
+            />
 
-        <div class="content">
-            <div class="content-header">
-                <h3 class="content-header__title">Последняя смена</h3>
-            </div>
+            <input
+                type="date"
+                class="text-center border bg-slate-100 rounded-md p-1 my-1"
+                title="до даты закрытия смены"
+            />
+
+            <select class="text-center border bg-slate-100 rounded-md p-2 my-1">
+                <option value="">10:15 - 10.07.2022 - Екатерина</option>
+                <option value="">10:00 - 9.07.2022 - Дмитрий</option>
+                <option value="">10:02 - 8.07.2022 - Екатерина</option>
+            </select>
 
             <ul
                 class="content-info"

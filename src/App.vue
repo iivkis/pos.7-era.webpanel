@@ -42,7 +42,7 @@ body {
 }
 
 .content:not(:last-of-type) {
-    @apply border-b border-slate-400;
+    @apply border-b border-gray-400;
     @apply md:border-none;
 }
 
