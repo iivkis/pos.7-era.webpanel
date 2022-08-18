@@ -22,12 +22,12 @@ body {
 }
 
 .btn--primary {
-    @apply bg-lime-500;
+    @apply bg-lime-500 hover:bg-green-500;
 }
 
 .btn--primary--outline {
     @apply text-lime-500 hover:text-white;
-    @apply border border-lime-500 hover:bg-lime-500;
+    @apply border border-lime-500 hover:bg-green-500;
 }
 
 .content {

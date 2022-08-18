@@ -4,20 +4,25 @@ const route = useRoute();
 
 const outletID = Number(route.params.outletID);
 
-var description = ref([
-    [
-        {
-            key: "Организация",
-            value: "Моя организация",
-        },
-        {
-            key: "Точка продаж",
-            value: "Главная точка продаж",
-        },
-    ],
+var allSession = ref([
+    {
+        time: "10:15",
+        date: "10.07.2022",
+        name: "Екатерина",
+    },
+    {
+        time: "10:04",
+        date: "9.07.2022",
+        name: "Дмитрий",
+    },
+    {
+        time: "9:57",
+        date: "8.07.2022",
+        name: "Екатерина",
+    },
 ]);
 
-var lastSessionInfo = ref([
+var sessionInfo = ref([
     [
         {
             key: "Статус",
@@ -63,11 +68,11 @@ var lastSessionInfo = ref([
 
 <template>
     <div class="container">
-        <Header title="Метрики"></Header>
+        <Header title="Метрики - Смены"></Header>
 
         <div class="content">
             <div class="content-header">
-                <h3 class="content-header__title">Cмены</h3>
+                <h3 class="content-header__title">Выберите период</h3>
             </div>
 
             <input
@@ -82,27 +87,39 @@ var lastSessionInfo = ref([
                 title="до даты закрытия смены"
             />
 
+            <button class="btn btn--primary mt-2">Показать</button>
+        </div>
+
+        <div class="content">
+            <div class="content-header">
+                <h3 class="content-header__title">Список смен</h3>
+            </div>
+
             <select class="text-center border bg-slate-100 rounded-md p-2 my-1">
-                <option value="">10:15 - 10.07.2022 - Екатерина</option>
-                <option value="">10:00 - 9.07.2022 - Дмитрий</option>
-                <option value="">10:02 - 8.07.2022 - Екатерина</option>
+                <option
+                    v-for="(sess, index) in allSession"
+                    :value="index"
+                    :key="index"
+                >
+                    {{ sess.time }} - {{ sess.date }} - {{ sess.name }}
+                </option>
             </select>
 
             <ul
                 class="content-info"
-                v-for="(lastSessionGroup, index) in lastSessionInfo"
+                v-for="(sessionGroup, index) in sessionInfo"
                 :key="index"
             >
                 <li
                     class="content-info-item"
-                    v-for="(session, index) in lastSessionGroup"
+                    v-for="(sess, index) in sessionGroup"
                     :key="index"
                 >
                     <span class="content-info-item__key">
-                        {{ session.key }}:
+                        {{ sess.key }}:
                     </span>
                     <span class="content-info-item__value">
-                        {{ session.value }}
+                        {{ sess.value }}
                     </span>
                 </li>
             </ul>
