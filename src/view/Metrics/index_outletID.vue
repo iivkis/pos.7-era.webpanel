@@ -221,8 +221,7 @@ onMounted(async () => {
 
             <content-wrap v-else>
                 <p class="text-center text-slate-600 p-2">
-                    Здесь будет отображен список смен, как только они появятся,
-                    но пока что тут пусто
+                    Здесь будет отображен список смен, как только они появятся
                 </p>
             </content-wrap>
         </content>

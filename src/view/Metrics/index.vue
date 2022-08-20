@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
+import { useRouter } from "vue-router";
 import { GetOutlets, GetOutletsResponse } from "../../service/api/outlets";
 
 import {
@@ -7,7 +8,10 @@ import {
     GetActivatedInvitesResponse,
 } from "../../service/api/invites";
 
-const router = useRouter()
+import Header from "../../components/Header.vue";
+import Content from "../../components/Content.vue";
+
+const router = useRouter();
 
 var myOutlets = ref([]) as Ref<GetOutletsResponse[]>;
 var affiliates = ref([]) as Ref<GetActivatedInvitesResponse[]>;
@@ -20,17 +24,18 @@ onMounted(async () => {
 function redirect(outletID: number) {
     router.push({
         name: "Metrics_OutletID",
-        params:{
-            outletID: outletID
-        }
-    })
+        params: {
+            outletID: outletID,
+        },
+    });
 }
 </script>
 
 <template>
     <div class="container">
         <Header title="Выберите точку продаж"></Header>
-        <ul class="content organizations">
+
+        <content class="organizations">
             <!-- organization outlets -->
             <li class="organizations-item">
                 <h2 class="organizations-item__name">Моя организация</h2>
@@ -51,7 +56,7 @@ function redirect(outletID: number) {
             </li>
             <!-- /organization outlets -->
 
-            <!-- affiliate -->
+            <!-- affiliate outlets-->
             <li
                 class="organizations-item"
                 v-for="(affiliate, index) in affiliates"
@@ -76,8 +81,8 @@ function redirect(outletID: number) {
                     </li>
                 </ul>
             </li>
-            <!-- /affiliate -->
-        </ul>
+            <!-- /affiliate outlets-->
+        </content>
     </div>
 </template>
 
@@ -135,11 +140,8 @@ function redirect(outletID: number) {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Header from "../../components/Header.vue";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "Metrics",
-    components: { Header },
 });
 </script>
