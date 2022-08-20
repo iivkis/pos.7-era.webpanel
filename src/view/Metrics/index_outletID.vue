@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
+import { useRoute } from "vue-router";
+
+import Header from "../../components/Header.vue";
+import Content from "../../components/Content.vue";
+import ContentWrap from "../../components/ContentWrap.vue";
+import ContentKeyValueList from "../../components/ContentKeyValueList.vue";
+import { KeyValue } from "../../components/ContentKeyValueList.vue";
 
 const route = useRoute();
 const outletID = Number(route.params.outletID);
@@ -16,9 +23,8 @@ var selectSessions = ref([]) as Ref<
     }[]
 >;
 
-var summaryInformation = ref([]) as Ref<{ key: string; value: string }[][]>;
-
-var sessionInfo = ref([]) as Ref<{ key: string; value: string }[][]>;
+var summaryInformation = ref([]) as Ref<KeyValue[][]>;
+var sessionInfo = ref([]) as Ref<KeyValue[][]>;
 
 function renderSummaryInfo() {
     let sumReceipts = 0, // кол-во чеков
@@ -169,113 +175,64 @@ onMounted(async () => {
     <div class="container">
         <Header title="Метрики - Смены"></Header>
 
-        <div class="content">
-            <div class="content-header">
-                <h3 class="content-header__title">Выберите период</h3>
-            </div>
-
+        <content title="Выберите период">
             <input
                 type="date"
-                class="text-center border bg-slate-100 rounded-md p-1 my-1"
+                class="dateInput"
                 title="от даты открытия смены"
             />
 
             <input
                 type="date"
-                class="text-center border bg-slate-100 rounded-md p-1 my-1"
+                class="dateInput"
                 title="до даты закрытия смены"
             />
 
             <button class="btn btn--primary mt-2">Показать</button>
-        </div>
+        </content>
 
-        <div class="content">
-            <div class="content-header">
-                <h3 class="content-header__title">
-                    Общая информация за выбранный период
-                </h3>
-                <ul
-                    class="content-info"
-                    v-for="(summaryInfoGroup, index) in summaryInformation"
-                    :key="index"
+        <content title="Общая информация за выбранный период">
+            <content-key-value-list
+                :list="summaryInformation"
+            ></content-key-value-list>
+        </content>
+
+        <content title="Список смен">
+            <content-wrap v-if="selectSessions.length > 0">
+                <select
+                    class="select"
+                    v-model="selectedSessionID"
+                    @change="renderSessionInfo(selectedSessionID)"
                 >
-                    <li
-                        class="content-info-item"
-                        v-for="(info, index) in summaryInfoGroup"
+                    <option
+                        v-for="(sess, index) in selectSessions"
+                        :value="index"
                         :key="index"
                     >
-                        <span class="content-info-item__key">
-                            {{ info.key }}:
-                        </span>
-                        <span class="content-info-item__value">
-                            {{ info.value }}
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+                        {{ sess.time }} - {{ sess.date }} -
+                        {{ sess.name }}
+                    </option>
+                </select>
 
-        <div class="content">
-            <div class="content-header">
-                <h3 class="content-header__title">Список смен</h3>
-            </div>
+                <content-key-value-list
+                    :list="sessionInfo"
+                ></content-key-value-list>
+            </content-wrap>
 
-            <select
-                class="select"
-                v-model="selectedSessionID"
-                @change="renderSessionInfo(selectedSessionID)"
-            >
-                <option
-                    v-for="(sess, index) in selectSessions"
-                    :value="index"
-                    :key="index"
-                >
-                    {{ sess.time }} - {{ sess.date }} - {{ sess.name }}
-                </option>
-            </select>
-
-            <ul
-                class="content-info"
-                v-for="(sessionGroup, index) in sessionInfo"
-                :key="index"
-            >
-                <li
-                    class="content-info-item"
-                    v-for="(sess, index) in sessionGroup"
-                    :key="index"
-                >
-                    <span class="content-info-item__key">
-                        {{ sess.key }}:
-                    </span>
-                    <span class="content-info-item__value">
-                        {{ sess.value }}
-                    </span>
-                </li>
-            </ul>
-        </div>
+            <content-wrap v-else>
+                <p class="text-center text-slate-600 p-2">
+                    Здесь будет отображен список смен, как только они появятся,
+                    но пока что тут пусто
+                </p>
+            </content-wrap>
+        </content>
     </div>
 </template>
-
 <style scoped lang="postcss">
-.content-info {
-    @apply flex flex-col;
-    @apply py-1.5 px-1;
+.dateInput {
+    @apply text-center border bg-slate-100;
+    @apply rounded-md p-1 my-1;
 }
-
-.content-info:not(:first-of-type) {
-    @apply border-t;
-}
-
-.content-info-item {
-    @apply flex py-0.5;
-}
-.content-info-item__key {
-    @apply font-medium mr-1.5;
-}
-.content-info-item__value {
-    @apply text-slate-700;
-}
-
 .select {
     @apply text-center border bg-slate-100 rounded-md p-2 my-1;
 }
@@ -283,11 +240,9 @@ onMounted(async () => {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
-
-import Header from "../../components/Header.vue";
 
 import { GetSessions, GetSessionsResponse } from "../../service/api/sessions";
+
 import {
     GetEmployees,
     GetEmployeesResponse,
@@ -295,6 +250,5 @@ import {
 
 export default defineComponent({
     name: "Outlets_OutletID",
-    components: { Header },
 });
 </script>

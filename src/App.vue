@@ -29,32 +29,4 @@ body {
     @apply text-lime-500 hover:text-white;
     @apply border border-lime-500 hover:bg-green-500;
 }
-
-.content {
-    @apply bg-white md:rounded-lg shadow-md;
-    @apply flex flex-col;
-    @apply p-3 md:mt-3;
-}
-
-.content:first-of-type {
-    @apply rounded-t-lg;
-    @apply mt-3;
-}
-
-.content:not(:last-of-type) {
-    @apply border-b border-gray-400;
-    @apply md:border-none;
-}
-
-.content:last-of-type {
-    @apply rounded-b-lg;
-}
-
-.content-header {
-    @apply text-center;
-}
-
-.content-header__title {
-    @apply text-sm;
-}
 </style>
