@@ -2,17 +2,13 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { key, MutationTypes } from "../../store/";
+import { useRouter } from "vue-router";
 
-import {
-    SignInOrganization,
-    SignInEmployee,
-} from "../../service/api/authorization";
+import Header from "../../components/Header.vue";
+import Content from "../../components/Content.vue";
 
-import { GetEmployees } from "../../service/api/employees";
-import { Errors } from "../../service/api/errors";
-
-const store = useStore(key);
 const router = useRouter();
+const store = useStore(key);
 
 var login = ref("");
 var password = ref("");
@@ -61,53 +57,56 @@ async function authorization() {
 <template>
     <div class="container">
         <Header title="Авторизация в POS-системе"></Header>
-        <form class="content form">
-            <div class="form-row">
-                <div class="form-row-field">
-                    <input
-                        name="email"
-                        type="text"
-                        class="form-row-field__input"
-                        placeholder="Логин организации"
-                        v-model="login"
-                    />
-                </div>
-            </div>
 
-            <div class="form-row">
-                <div class="form-row-field">
-                    <input
-                        name="password"
-                        type="password"
-                        class="form-row-field__input"
-                        placeholder="Пароль организации"
-                        v-model="password"
-                    />
+        <content title="Введите данные для входа">
+            <form class="form">
+                <div class="form-row">
+                    <div class="form-row-field">
+                        <input
+                            name="email"
+                            type="text"
+                            class="form-row-field__input"
+                            placeholder="Логин организации"
+                            v-model="login"
+                        />
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <div class="form-row-field">
-                    <input
-                        name="pin"
-                        type="text"
-                        class="form-row-field__input"
-                        placeholder="Пин-код владельца"
-                        autocomplete="off"
-                        v-model="pin"
-                    />
+                <div class="form-row">
+                    <div class="form-row-field">
+                        <input
+                            name="password"
+                            type="password"
+                            class="form-row-field__input"
+                            placeholder="Пароль организации"
+                            v-model="password"
+                        />
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <button
-                    class="btn btn--primary--outline w-full"
-                    @click.prevent="authorization"
-                >
-                    Войти
-                </button>
-            </div>
-        </form>
+                <div class="form-row">
+                    <div class="form-row-field">
+                        <input
+                            name="pin"
+                            type="text"
+                            class="form-row-field__input"
+                            placeholder="Пин-код владельца"
+                            autocomplete="off"
+                            v-model="pin"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <button
+                        class="btn btn--primary--outline w-full"
+                        @click.prevent="authorization"
+                    >
+                        Войти
+                    </button>
+                </div>
+            </form>
+        </content>
     </div>
 </template>
 
@@ -128,13 +127,18 @@ async function authorization() {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+
 import { ServerError } from "../../service/api/api.types";
 
-import Header from "../../components/Header.vue";
+import { GetEmployees } from "../../service/api/employees";
+import { Errors } from "../../service/api/errors";
+
+import {
+    SignInOrganization,
+    SignInEmployee,
+} from "../../service/api/authorization";
 
 export default defineComponent({
     name: "Authorization",
-    components: { Header },
 });
 </script>
