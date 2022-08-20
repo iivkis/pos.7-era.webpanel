@@ -43,7 +43,7 @@ export default defineComponent({
     props: {
         list: {
             required: true,
-            type: [] as PropType<KeyValue[][]>,
+            type: Object as PropType<KeyValue[][]>,
         },
     },
 });
