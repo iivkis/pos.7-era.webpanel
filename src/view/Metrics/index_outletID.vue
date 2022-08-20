@@ -11,6 +11,8 @@ import { KeyValue } from "../../components/ContentKeyValueList.vue";
 const route = useRoute();
 const outletID = Number(route.params.outletID);
 
+var loading = ref(true);
+
 var employees = [] as GetEmployeesResponse[];
 var sessions = [] as GetSessionsResponse[];
 
@@ -166,8 +168,15 @@ onMounted(async () => {
     sessions = (await GetSessions(outletID)).reverse();
 
     renderSummaryInfo();
-    renderSelectSessions();
-    renderSessionInfo(selectedSessionID.value);
+
+    if (sessions.length > 0) {
+        renderSelectSessions();
+        renderSessionInfo(selectedSessionID.value);
+    }
+
+    setTimeout(() => {
+        loading.value = false;
+    }, 1500);
 });
 </script>
 
@@ -191,13 +200,16 @@ onMounted(async () => {
             <button class="btn btn--primary mt-2">Показать</button>
         </content>
 
-        <content title="Общая информация за выбранный период">
+        <content
+            title="Общая информация за выбранный период"
+            :loading="loading"
+        >
             <content-key-value-list
                 :list="summaryInformation"
             ></content-key-value-list>
         </content>
 
-        <content title="Список смен">
+        <content title="Список смен" :loading="loading">
             <content-wrap v-if="selectSessions.length > 0">
                 <select
                     class="select"

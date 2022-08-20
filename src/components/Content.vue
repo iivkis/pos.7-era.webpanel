@@ -4,7 +4,13 @@
             <h3 class="content-header__title">{{ title }}</h3>
         </div>
 
-        <slot />
+        <ContentWrap v-if="!loading">
+            <slot />
+        </ContentWrap>
+
+        <ContentWrap v-else>
+            <ContentLoading></ContentLoading>
+        </ContentWrap>
     </div>
 </template>
 
@@ -40,6 +46,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import ContentWrap from "./ContentWrap.vue";
+import ContentLoading from "./ContentLoading.vue";
 
 export default defineComponent({
     name: "Content",
@@ -48,6 +56,11 @@ export default defineComponent({
             type: String,
             required: false,
         },
+        loading: {
+            required: false,
+            type: Boolean,
+        },
     },
+    components: { ContentWrap, ContentWrap, ContentLoading },
 });
 </script>
