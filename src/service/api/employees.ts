@@ -10,11 +10,14 @@ export interface GetEmployeesResponse {
     role: string;
 }
 
-function GetEmployees(): Promise<GetEmployeesResponse[]> {
+function GetEmployees(outletID: number): Promise<GetEmployeesResponse[]> {
     const req = Request({
         method: "GET",
         url: "/employees",
         headers: OrganizationHeaders(),
+        params: {
+            outlet_id: outletID,
+        },
     });
 
     return Do(req).then(({ data }) => data as GetEmployeesResponse[]);

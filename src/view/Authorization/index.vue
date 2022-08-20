@@ -33,7 +33,7 @@ async function authorization() {
 
     var ownerID: number = 0;
     try {
-        const { id } = (await GetEmployees())[0];
+        const { id } = (await GetEmployees(0))[0];
         ownerID = id;
     } catch (err: ServerError) {
         console.error(err);
