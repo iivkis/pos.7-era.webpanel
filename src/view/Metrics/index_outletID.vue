@@ -116,15 +116,15 @@ function renderSessionInfo(sessionIndex: number) {
     let od = new Date(sess.date_open); //open date
     let cd = new Date(sess.date_close); //close date
 
-    const formatOpenDate = `${od.getHours()}:${od.getMinutes()} - ${od.getDate()}.${od.getMonth()}.${od.getFullYear()}`;
-    const formatCloseDate = cd.getTime()
+    const formatedOpenDate = `${od.getHours()}:${od.getMinutes()} - ${od.getDate()}.${od.getMonth()}.${od.getFullYear()}`;
+    const formatedCloseDate = cd.getTime()
         ? `${cd.getHours()}:${cd.getMinutes()} - ${cd.getDate()}.${cd.getMonth()}.${cd.getFullYear()}`
         : "-";
 
     sessionInfo.value.push([
         {
             key: "Статус",
-            value: sessions[sessionIndex].date_close ? "Закрыта" : "Открыта",
+            value: sess.date_close ? "Закрыта" : "Открыта",
         },
         {
             key: "Сотрудник",
@@ -135,11 +135,11 @@ function renderSessionInfo(sessionIndex: number) {
     sessionInfo.value.push([
         {
             key: "Открыта",
-            value: formatOpenDate,
+            value: formatedOpenDate,
         },
         {
             key: "Закрыта",
-            value: formatCloseDate,
+            value: formatedCloseDate,
         },
     ]);
 
