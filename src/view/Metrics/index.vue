@@ -12,6 +12,7 @@ import Header from "../../components/Header.vue";
 import Content from "../../components/Content.vue";
 
 const router = useRouter();
+var loading = ref(true);
 
 var myOutlets = ref([]) as Ref<GetOutletsResponse[]>;
 var affiliates = ref([]) as Ref<GetActivatedInvitesResponse[]>;
@@ -19,6 +20,8 @@ var affiliates = ref([]) as Ref<GetActivatedInvitesResponse[]>;
 onMounted(async () => {
     myOutlets.value = await GetOutlets();
     affiliates.value = await GetActivatedInvites();
+
+    loading.value = false;
 });
 
 function redirect(outletID: number) {
@@ -35,7 +38,11 @@ function redirect(outletID: number) {
     <div class="container">
         <Header title="Выберите точку продаж"></Header>
 
-        <content class="organizations">
+        <content
+            title="Список доступных точек"
+            class="organizations"
+            :loading="loading"
+        >
             <!-- organization outlets -->
             <li class="organizations-item">
                 <h2 class="organizations-item__name">Моя организация</h2>

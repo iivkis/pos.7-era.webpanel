@@ -13,6 +13,9 @@ const outletID = Number(route.params.outletID);
 
 var loading = ref(true);
 
+var startInputDate = ref(localStorage.getItem("sessions.startDate") || ""),
+    endInputDate = ref(localStorage.getItem("sessions.endDate") || "");
+
 var employees = [] as GetEmployeesResponse[];
 var sessions = [] as GetSessionsResponse[];
 
@@ -29,6 +32,8 @@ var summaryInformation = ref([]) as Ref<KeyValue[][]>;
 var sessionInfo = ref([]) as Ref<KeyValue[][]>;
 
 function renderSummaryInfo() {
+    summaryInformation.value = [];
+
     let sumReceipts = 0, // кол-во чеков
         sumCashEarned = 0, // кол-во наличными
         sumBankEarned = 0, //кол-во оплатой по карте
@@ -41,6 +46,9 @@ function renderSummaryInfo() {
     });
 
     average = (sumCashEarned + sumBankEarned) / sumReceipts;
+    if (isNaN(average)) {
+        average = 0;
+    }
 
     //push info
     summaryInformation.value.push([
@@ -68,7 +76,7 @@ function renderSummaryInfo() {
     summaryInformation.value.push([
         {
             key: "Средний чек",
-            value: `${isNaN(average) ? "0.00" : average.toFixed(2)} ₽`,
+            value: `${average.toFixed(2)} ₽`,
         },
         {
             key: "Общая сумма заработка",
@@ -78,6 +86,8 @@ function renderSummaryInfo() {
 }
 
 function renderSelectSessions() {
+    selectSessions.value = [];
+
     sessions.forEach((session) => {
         let date = new Date(session.date_open);
 
@@ -94,6 +104,10 @@ function renderSelectSessions() {
 
 function renderSessionInfo(sessionIndex: number) {
     sessionInfo.value = [];
+
+    if (sessions.length == 0) {
+        return;
+    }
 
     const sess = sessions[sessionIndex];
 
@@ -163,20 +177,42 @@ function renderSessionInfo(sessionIndex: number) {
     ]);
 }
 
-onMounted(async () => {
+function saveStartInputDate(): void {
+    localStorage.setItem("sessions.startDate", startInputDate.value);
+}
+
+function saveEndInputDate(): void {
+    localStorage.setItem("sessions.endDate", endInputDate.value);
+}
+
+async function loadEmployees(): Promise<void> {
     employees = await GetEmployees(outletID);
-    sessions = (await GetSessions(outletID)).reverse();
+}
+
+async function loadSessions(): Promise<void> {
+    let start = new Date(startInputDate.value).getTime();
+    let end = new Date(endInputDate.value).getTime();
+
+    sessions = (await GetSessions(outletID, start, end)).reverse();
+}
+
+async function viewSessions() {
+    loading.value = true;
+
+    await loadSessions();
 
     renderSummaryInfo();
-
-    if (sessions.length > 0) {
-        renderSelectSessions();
-        renderSessionInfo(selectedSessionID.value);
-    }
+    renderSelectSessions();
+    renderSessionInfo(selectedSessionID.value);
 
     setTimeout(() => {
         loading.value = false;
     }, 1000);
+}
+
+onMounted(async () => {
+    await loadEmployees();
+    await viewSessions();
 });
 </script>
 
@@ -189,15 +225,21 @@ onMounted(async () => {
                 type="date"
                 class="dateInput"
                 title="от даты открытия смены"
+                v-model="startInputDate"
+                @change="saveStartInputDate"
             />
 
             <input
                 type="date"
                 class="dateInput"
                 title="до даты закрытия смены"
+                v-model="endInputDate"
+                @change="saveEndInputDate"
             />
 
-            <button class="btn btn--primary mt-2">Показать</button>
+            <button class="btn btn--primary mt-2" @click="viewSessions">
+                Показать
+            </button>
         </content>
 
         <content

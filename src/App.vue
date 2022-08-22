@@ -7,6 +7,7 @@
 
 body {
     @apply bg-slate-100;
+    @apply overflow-y-scroll;
     font-family: "Roboto", sans-serif;
 }
 

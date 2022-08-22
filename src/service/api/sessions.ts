@@ -15,13 +15,19 @@ export interface GetSessionsResponse {
     number_of_receipts: number;
 }
 
-function GetSessions(outletID: number): Promise<GetSessionsResponse[]> {
+function GetSessions(
+    outletID: number,
+    start: number,
+    end: number
+): Promise<GetSessionsResponse[]> {
     const req = Request({
         method: "GET",
         url: "/sessions",
         headers: EmployeeHeaders(),
         params: {
             outlet_id: outletID,
+            start: start ? start : 0,
+            end: end ? end : 0,
         },
     });
 
