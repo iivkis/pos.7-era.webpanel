@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { useRoute } from "vue-router";
+import { KeyValue } from "../../components/ContentKeyValueList.vue";
+
+import { GetEmployeeName } from "../../service/helper/employees";
 
 import Header from "../../components/Header.vue";
 import Content from "../../components/Content.vue";
 import ContentWrap from "../../components/ContentWrap.vue";
 import ContentKeyValueList from "../../components/ContentKeyValueList.vue";
-import { KeyValue } from "../../components/ContentKeyValueList.vue";
 
 const route = useRoute();
 const outletID = Number(route.params.outletID);
@@ -88,16 +90,18 @@ function renderSummaryInfo() {
 function renderSelectSessions() {
     selectSessions.value = [];
 
-    sessions.forEach((session) => {
-        let date = new Date(session.date_open);
+    sessions.forEach((sess) => {
+        let date = new Date(sess.date_open);
 
         let formatDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
         let formatTime = `${date.getHours()}:${date.getMinutes()}`;
 
         selectSessions.value.push({
-            name: employees.filter((x) => x.id === session.employee_id)[0].name,
-            date: formatDate,
             time: formatTime,
+            date: formatDate,
+            name:
+                GetEmployeeName(employees, sess.employee_id) ||
+                "(сотрудник удален)",
         });
     });
 }
@@ -111,7 +115,8 @@ function renderSessionInfo(sessionIndex: number) {
 
     const sess = sessions[sessionIndex];
 
-    const name = employees.filter((x) => x.id === sess.employee_id)[0].name;
+    var name: string =
+        GetEmployeeName(employees, sess.employee_id) || "(сотрудник удален)";
 
     let od = new Date(sess.date_open); //open date
     let cd = new Date(sess.date_close); //close date
@@ -150,7 +155,7 @@ function renderSessionInfo(sessionIndex: number) {
         },
         {
             key: "Наличные (закрыта)",
-            value: `${sess.cash_close.toFixed(2)} ₽`,
+            value: sess.date_close ? `${sess.cash_close.toFixed(2)} ₽` : "-",
         },
     ]);
 
