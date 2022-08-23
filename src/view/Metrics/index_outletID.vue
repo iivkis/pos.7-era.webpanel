@@ -93,12 +93,12 @@ function renderSelectSessions() {
     sessions.forEach((sess) => {
         let date = new Date(sess.date_open);
 
-        let formatDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-        let formatTime = `${date.getHours()}:${date.getMinutes()}`;
+        let formatedDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        let formatedTime = `${date.getHours()}:${date.getMinutes()}`;
 
         selectSessions.value.push({
-            time: formatTime,
-            date: formatDate,
+            time: formatedTime,
+            date: formatedDate,
             name:
                 GetEmployeeName(employees, sess.employee_id) ||
                 "(сотрудник удален)",
@@ -115,9 +115,6 @@ function renderSessionInfo(sessionIndex: number) {
 
     const sess = sessions[sessionIndex];
 
-    var name: string =
-        GetEmployeeName(employees, sess.employee_id) || "(сотрудник удален)";
-
     let od = new Date(sess.date_open); //open date
     let cd = new Date(sess.date_close); //close date
 
@@ -133,7 +130,9 @@ function renderSessionInfo(sessionIndex: number) {
         },
         {
             key: "Сотрудник",
-            value: name,
+            value:
+                GetEmployeeName(employees, sess.employee_id) ||
+                "(сотрудник удален)",
         },
     ]);
 
