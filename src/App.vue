@@ -6,6 +6,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 
 body {
+    @apply relative;
     @apply bg-slate-100;
     @apply overflow-y-scroll;
     font-family: "Roboto", sans-serif;

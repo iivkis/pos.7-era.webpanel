@@ -6,6 +6,8 @@ import { KeyValue } from "../../components/ContentKeyValueList.vue";
 import { GetEmployeeName } from "../../service/helper/employees";
 
 import Header from "../../components/Header.vue";
+
+import Popup from "../../components/Popup.vue";
 import Content from "../../components/Content.vue";
 import ContentWrap from "../../components/ContentWrap.vue";
 import ContentKeyValueList from "../../components/ContentKeyValueList.vue";
@@ -221,6 +223,8 @@ onMounted(async () => {
 </script>
 
 <template>
+    <Popup>
+    </Popup>
     <div class="container">
         <Header title="Метрики - Смены"></Header>
 
