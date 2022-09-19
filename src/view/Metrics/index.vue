@@ -9,7 +9,7 @@ import {
 } from "../../service/api/invites";
 
 import Header from "../../components/Header.vue";
-import Content from "../../components/Content.vue";
+import Content from "../../components/content/Content.vue";
 
 const router = useRouter();
 var loading = ref(true);

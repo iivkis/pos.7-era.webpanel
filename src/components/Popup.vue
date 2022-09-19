@@ -66,11 +66,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Content from "./Content.vue";
-import ContentWrap from "./ContentWrap.vue";
+import Content from "./content/Content.vue";
+import ContentWrap from "./content/ContentWrap.vue";
 
 export default defineComponent({
     name: "Popup",
-    components: { Content, ContentWrap, ContentWrap },
+    components: { Content, ContentWrap },
 });
 </script>

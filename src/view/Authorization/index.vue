@@ -5,7 +5,7 @@ import { key, MutationTypes } from "../../store/";
 import { useRouter } from "vue-router";
 
 import Header from "../../components/Header.vue";
-import Content from "../../components/Content.vue";
+import Content from "../../components/content/Content.vue";
 
 const router = useRouter();
 const store = useStore(key);
@@ -19,11 +19,16 @@ async function authorization() {
         const { token } = await SignInOrganization(login.value, password.value);
         store.commit(MutationTypes.SET_ORGANIZATION_API_KEY, token);
         console.info("organization:", store.state.OrganizationAPIKey);
-    } catch (err: ServerError) {
+    } catch (e) {
+        let err = e as ServerError;
+
         switch (err.code) {
             case Errors.ERROR_INVALID_PASSWORD:
                 alert("неверный пароль организации");
+            default:
+                console.error(e);
         }
+
         return;
     }
 
@@ -31,8 +36,8 @@ async function authorization() {
     try {
         const { id } = (await GetEmployees(0))[0];
         ownerID = id;
-    } catch (err: ServerError) {
-        console.error(err);
+    } catch (e) {
+        console.error(e);
         return;
     }
 
@@ -40,9 +45,9 @@ async function authorization() {
         const { token } = await SignInEmployee(ownerID, pin.value);
         store.commit(MutationTypes.SET_EMPLOYEE_API_KEY, token);
         console.info("employee:", store.state.EmployeeAPIKey);
-    } catch (err: ServerError) {
+    } catch (e) {
         alert("Упс, неверный пинкод владельца");
-        console.error(err);
+        console.error(e);
         return;
     }
 
@@ -128,10 +133,9 @@ async function authorization() {
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { ServerError } from "../../service/api/api.types";
-
-import { GetEmployees } from "../../service/api/employees";
 import { Errors } from "../../service/api/errors";
+import { ServerError } from "../../service/api/api.types";
+import { GetEmployees } from "../../service/api/employees";
 
 import {
     SignInOrganization,

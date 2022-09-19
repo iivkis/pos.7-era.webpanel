@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { useRoute } from "vue-router";
-import { KeyValue } from "../../components/ContentKeyValueList.vue";
+import { KeyValue } from "../../components/content/ContentKeyValueList.vue";
 
 import { GetEmployeeName } from "../../service/helper/employees";
 
 import Header from "../../components/Header.vue";
 
 import Popup from "../../components/Popup.vue";
-import Content from "../../components/Content.vue";
-import ContentWrap from "../../components/ContentWrap.vue";
-import ContentKeyValueList from "../../components/ContentKeyValueList.vue";
+import Content from "../../components/content/Content.vue";
+import ContentWrap from "../../components/content/ContentWrap.vue";
+import ContentKeyValueList from "../../components/content/ContentKeyValueList.vue";
 
 const route = useRoute();
 const outletID = Number(route.params.outletID);
@@ -223,8 +223,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <Popup>
-    </Popup>
+    <Popup> </Popup>
     <div class="container">
         <Header title="Метрики - Смены"></Header>
 
