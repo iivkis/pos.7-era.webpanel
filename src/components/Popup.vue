@@ -1,10 +1,10 @@
 <template>
-    <div class="popup">
+    <div class="popup" v-if="show">
         <div class="container">
             <Content>
                 <ContentWrap>
                     <ContentWrap class="items-end">
-                        <span class="popup__btnClose"></span>
+                        <span class="popup__btnClose" @click="toggle"></span>
                     </ContentWrap>
 
                     <ContentWrap>
@@ -26,8 +26,8 @@
 
 <style lang="postcss">
 .popup {
-    @apply absolute bg-black bg-opacity-40;
     @apply w-full h-full;
+    @apply absolute bg-black bg-opacity-40;
 }
 
 .popup__btnClose {
@@ -72,5 +72,16 @@ import ContentWrap from "./content/ContentWrap.vue";
 export default defineComponent({
     name: "Popup",
     components: { Content, ContentWrap },
+    props: {
+        show: {
+            required: true,
+            type: Boolean,
+        },
+    },
+    methods: {
+        toggle() {
+
+        }
+    }
 });
 </script>

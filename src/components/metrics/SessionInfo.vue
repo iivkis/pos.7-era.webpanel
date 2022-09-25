@@ -1,0 +1,190 @@
+<script setup lang="ts">
+import { defineComponent, PropType, ref, watch } from "vue";
+
+import { GetEmployeeName } from "../../service/helper/employees";
+
+import { GetSessionsResponse } from "../../service/api/sessions";
+import { GetEmployeesResponse } from "../../service/api/employees";
+
+import Content from "../../components/content/Content.vue";
+import ContentWrap from "../../components/content/ContentWrap.vue";
+import ContentKeyValueList, {
+    KeyValue,
+} from "../../components/content/ContentKeyValueList.vue";
+
+const props = defineProps({
+    loading: {
+        required: true,
+        type: Boolean,
+    },
+
+    employees: {
+        required: true,
+        type: Object as PropType<GetEmployeesResponse[]>,
+    },
+
+    sessions: {
+        required: true,
+        type: Object as PropType<GetSessionsResponse[]>,
+    },
+});
+
+let selectedID = ref(0);
+
+let options = ref(
+    [] as {
+        time: string;
+        date: string;
+        name: string;
+    }[]
+);
+
+let info = ref([] as KeyValue[][]);
+
+function renderOptions() {
+    options.value = [];
+    selectedID.value = 0;
+
+    props.sessions.forEach((sess) => {
+        let name = GetEmployeeName(props.employees, sess.employee_id);
+
+        let date = new Date(sess.date_open);
+      
+        let formatedDate = `${date.getDate()}.${
+            date.getMonth() + 1
+        }.${date.getFullYear()}`;
+      
+        let formatedTime = `${date.getHours()}:${date.getMinutes()}`;
+
+        options.value.push({
+            time: formatedTime,
+            date: formatedDate,
+            name: name || "(сотрудник удален)",
+        });
+    });
+}
+
+function renderInfo() {
+    info.value = [];
+    if (props.sessions.length == 0) {
+        return;
+    }
+
+    const sess = props.sessions[selectedID.value];
+
+    let d1 = new Date(sess.date_open);
+    let d2 = new Date(sess.date_close);
+
+    let openDate = `${d1.getHours()}:${d1.getMinutes()} - ${d1.getDate()}.${
+        d1.getMonth() + 1
+    }.${d1.getFullYear()}`;
+
+    let closedDate = `${d2.getHours()}:${d2.getMinutes()} - ${d2.getDate()}.${
+        d2.getMonth() + 1
+    }.${d2.getFullYear()}`;
+    
+    if (!d2.getTime()) closedDate = "-";
+
+    const name = GetEmployeeName(props.employees, sess.employee_id);
+
+    info.value.push([
+        {
+            key: "Статус",
+            value: sess.date_close ? "Закрыта" : "Открыта",
+        },
+        {
+            key: "Сотрудник",
+            value: name || "(сотрудник удален)",
+        },
+    ]);
+
+    info.value.push([
+        {
+            key: "Открыта",
+            value: openDate,
+        },
+        {
+            key: "Закрыта",
+            value: closedDate,
+        },
+    ]);
+
+    info.value.push([
+        {
+            key: "Наличные (открыта)",
+            value: `${sess.cash_open.toFixed(2)} ₽`,
+        },
+        {
+            key: "Наличные (закрыта)",
+            value: sess.date_close ? `${sess.cash_close.toFixed(2)} ₽` : "-",
+        },
+    ]);
+
+    info.value.push([
+        {
+            key: "Выручка оплатой наличными",
+            value: `${sess.cash_earned.toFixed(2)} ₽`,
+        },
+        {
+            key: "Выручка оплатой по карте",
+            value: `${sess.bank_earned.toFixed(2)} ₽`,
+        },
+    ]);
+
+    info.value.push([
+        {
+            key: "Количество чеков",
+            value: String(sess.number_of_receipts),
+        },
+        {
+            key: "Выручка",
+            value: `${(sess.cash_earned + sess.bank_earned).toFixed(2)} ₽`,
+        },
+    ]);
+}
+
+function render() {
+    renderOptions();
+    renderInfo();
+}
+
+watch(() => props.sessions, render);
+watch(() => props.employees, render);
+watch(selectedID, renderInfo);
+</script>
+
+<template>
+    <content title="Список смен" :loading="loading">
+        <content-wrap v-if="sessions.length > 0">
+            <select class="select" v-model="selectedID">
+                <option
+                    v-for="(opt, index) in options"
+                    :value="index"
+                    :key="index"
+                >
+                    {{ opt.time }} - {{ opt.date }} - {{ opt.name }}
+                </option>
+            </select>
+
+            <content-key-value-list :list="info"></content-key-value-list>
+        </content-wrap>
+
+        <content-wrap v-else>
+            <p class="text-center text-slate-600 p-2">
+                Здесь будет отображен список смен, как только они появятся
+            </p>
+        </content-wrap>
+    </content>
+</template>
+
+<style scoped lang="postcss">
+.select {
+    @apply text-center border bg-slate-100 rounded-md p-2 my-1;
+}
+</style>
+
+<script lang="ts">
+export default defineComponent({
+    name: "Metrics_Session_Info",
+});
+</script>
