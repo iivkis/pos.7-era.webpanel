@@ -1,24 +1,50 @@
+<script setup lang="ts">
+import Content from "../components/content/Content.vue";
+import ContentWrap from "../components/content/ContentWrap.vue";
+
+const props = defineProps({
+    title: {
+        required: true,
+        type: String,
+    },
+    toggle: {
+        required: true,
+        type: Boolean,
+    },
+});
+
+const emit = defineEmits(["close"]);
+
+watch(
+    () => props.toggle,
+    () => {
+        if (props.toggle) document.body.style.overflowY = "hidden";
+        else document.body.style.overflowY = "inherit";
+    }
+);
+</script>
+
 <template>
-    <div class="popup" v-if="show">
+    <div class="popup" v-if="toggle">
         <div class="container">
             <Content>
                 <ContentWrap>
                     <ContentWrap class="items-end">
-                        <span class="popup__btnClose" @click="toggle"></span>
+                        <span
+                            class="popup__btnClose"
+                            @click="emit('close')"
+                        ></span>
                     </ContentWrap>
 
                     <ContentWrap>
                         <div class="popup-header">
                             <h1 class="popup-header__title">
-                                Список чего-то там
+                                {{ title }}
                             </h1>
                         </div>
                     </ContentWrap>
                 </ContentWrap>
-
-                <ContentWrap>
-                    <slot />
-                </ContentWrap>
+                <slot />
             </Content>
         </div>
     </div>
@@ -26,8 +52,22 @@
 
 <style lang="postcss">
 .popup {
-    @apply w-full h-full;
-    @apply absolute bg-black bg-opacity-40;
+    @apply w-full h-screen;
+    @apply fixed bg-black bg-opacity-40;
+    @apply top-0 left-0 lg:py-5;
+    @apply overflow-y-auto;
+}
+
+.popup::-webkit-scrollbar {
+    width: 0;
+}
+
+.popup::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background-color: transparent;
 }
 
 .popup__btnClose {
@@ -65,23 +105,9 @@
 </style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import Content from "./content/Content.vue";
-import ContentWrap from "./content/ContentWrap.vue";
+import { defineComponent, watch } from "vue";
 
 export default defineComponent({
     name: "Popup",
-    components: { Content, ContentWrap },
-    props: {
-        show: {
-            required: true,
-            type: Boolean,
-        },
-    },
-    methods: {
-        toggle() {
-
-        }
-    }
 });
 </script>

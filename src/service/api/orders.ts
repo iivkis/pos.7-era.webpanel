@@ -27,6 +27,9 @@ function GetOrders(session_id: number): Promise<GetOrdersResponse[]> {
         method: "GET",
         url: "/orders",
         headers: EmployeeHeaders(),
+        params: {
+            session_id,
+        },
     });
 
     return Do(req).then(({ data }) => data as GetOrdersResponse[]);

@@ -31,4 +31,8 @@ body {
     @apply text-lime-500 hover:text-white;
     @apply border border-lime-500 hover:bg-green-500;
 }
+
+.btn--link {
+    @apply text-lime-500 hover:text-green-500 hover:underline;
+}
 </style>
