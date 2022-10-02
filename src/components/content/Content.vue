@@ -61,6 +61,6 @@ export default defineComponent({
             type: Boolean,
         },
     },
-    components: { ContentWrap, ContentWrap, ContentLoading },
+    components: { ContentWrap, ContentLoading },
 });
 </script>
