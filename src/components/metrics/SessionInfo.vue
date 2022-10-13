@@ -286,7 +286,7 @@ function formatDate(date: number): string {
     @apply font-bold;
     @apply border-dashed border-slate-700;
 
-    font-family: "Courier New", Courier, monospace;
+    font-family: Courier;
 }
 
 .orders-item:not(:first-of-type) {
