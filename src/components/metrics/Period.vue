@@ -59,6 +59,7 @@ let end = computed({
 
 <style scoped lang="postcss">
 .date {
+    @apply w-full;
     @apply text-center border bg-slate-100;
     @apply rounded-md p-1 my-1;
 }
