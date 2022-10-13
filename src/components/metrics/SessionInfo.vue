@@ -178,6 +178,11 @@ function closeReceipts() {
     popupReceiptsTotal.value.sum = 0;
     popupReceiptsShow.value = false;
 }
+
+function formatDate(date: number): string {
+    let d = new Date(date);
+    return `${d.getHours()}:${d.getMinutes()}`;
+}
 </script>
 
 <template>
@@ -192,7 +197,7 @@ function closeReceipts() {
                     :key="indexR"
                 >
                     <span class="orders-item__receiptID">
-                        #{{ indexR + 1 }}
+                        #{{ indexR + 1 }} ({{ formatDate(receipt.info.date) }})
                     </span>
                     <ul
                         class="orders-item-list"
